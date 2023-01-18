@@ -15,18 +15,18 @@ public class SwapiGateway {
         this.webClient = webClient;
     }
 
-    public Mono<PlanetsResponse> getPage(Integer page) {
+    public Mono<PlanetsResponse> getPlanetPage(Long page) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/planets/").queryParam("page", page).build())
                 .retrieve()
                 .bodyToMono(PlanetsResponse.class);
     }
 
-    public Mono<PlanetsResponse> getPage() {
-        return getPage(1);
+    public Mono<PlanetsResponse> getPlanetPage() {
+        return getPlanetPage(1L);
     }
 
-    public Mono<Film> getFilm(int id) {
+    public Mono<Film> getFilm(Long id) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/films/{id}").build(id))
                 .retrieve()

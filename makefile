@@ -1,6 +1,6 @@
 run:
 	./gradlew clean bootRun
-check:
+test:
 	./gradlew clean check
 docker: build
 	docker build . -t star-wars-app:latest
