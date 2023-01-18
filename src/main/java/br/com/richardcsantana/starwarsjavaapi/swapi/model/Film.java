@@ -1,8 +1,10 @@
 package br.com.richardcsantana.starwarsjavaapi.swapi.model;
 
+import java.time.LocalDate;
+
 public record Film(
         String title,
         String director,
-        String release_date
+        LocalDate release_date
 ) {
 }

@@ -1,6 +1,7 @@
 package br.com.richardcsantana.starwarsjavaapi.domain;
 
 import br.com.richardcsantana.starwarsjavaapi.swapi.SwapiGateway;
+import br.com.richardcsantana.starwarsjavaapi.swapi.model.Film;
 import br.com.richardcsantana.starwarsjavaapi.swapi.model.Planet;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
