@@ -1,4 +1,4 @@
-package br.com.richardcsantana.starwarsjavaapi.api.model;
+package br.com.richardcsantana.starwarsjavaapi.common.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;

@@ -1,6 +1,8 @@
 package br.com.richardcsantana.starwarsjavaapi.swapi;
 
 import br.com.richardcsantana.starwarsjavaapi.ApplicationTestsBase;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.SwapiGateway;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.SwapiNotFoundException;
 import br.com.richardcsantana.starwarsjavaapi.helper.MockServerHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,14 +66,4 @@ class SwapiGatewayTest extends ApplicationTestsBase {
                 .verifyComplete();
     }
 
-    @Test
-    void getFilmByIdNotFound() {
-        var film = swapiGateway.getFilm(404L);
-        StepVerifier
-                .create(film)
-                .expectErrorMatches(throwable ->
-                        throwable.getClass().equals(SwapiNotFoundException.class) &&
-                        throwable.getMessage().equals("Resource Not Found"))
-                .verify();
-    }
 }

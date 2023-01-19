@@ -1,6 +1,6 @@
 package br.com.richardcsantana.starwarsjavaapi;
 
-import br.com.richardcsantana.starwarsjavaapi.domain.ApiReaderService;
+import br.com.richardcsantana.starwarsjavaapi.batch.domain.ApiReaderService;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

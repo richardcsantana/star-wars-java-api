@@ -1,5 +1,6 @@
 package br.com.richardcsantana.starwarsjavaapi.swapi.model;
 
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.model.Planet;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

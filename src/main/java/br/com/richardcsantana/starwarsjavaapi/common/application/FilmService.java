@@ -1,8 +1,8 @@
-package br.com.richardcsantana.starwarsjavaapi.application;
+package br.com.richardcsantana.starwarsjavaapi.common.application;
 
-import br.com.richardcsantana.starwarsjavaapi.api.model.FilmEntity;
-import br.com.richardcsantana.starwarsjavaapi.api.model.repository.FilmRepository;
-import br.com.richardcsantana.starwarsjavaapi.swapi.SwapiGateway;
+import br.com.richardcsantana.starwarsjavaapi.common.model.FilmEntity;
+import br.com.richardcsantana.starwarsjavaapi.common.model.repository.FilmRepository;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.SwapiGateway;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 

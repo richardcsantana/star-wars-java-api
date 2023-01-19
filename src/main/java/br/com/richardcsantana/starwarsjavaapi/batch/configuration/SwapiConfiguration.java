@@ -1,4 +1,4 @@
-package br.com.richardcsantana.starwarsjavaapi.configuration;
+package br.com.richardcsantana.starwarsjavaapi.batch.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

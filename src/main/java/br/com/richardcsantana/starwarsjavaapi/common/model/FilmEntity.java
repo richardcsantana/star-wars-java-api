@@ -1,6 +1,6 @@
-package br.com.richardcsantana.starwarsjavaapi.api.model;
+package br.com.richardcsantana.starwarsjavaapi.common.model;
 
-import br.com.richardcsantana.starwarsjavaapi.swapi.model.Film;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.model.Film;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 

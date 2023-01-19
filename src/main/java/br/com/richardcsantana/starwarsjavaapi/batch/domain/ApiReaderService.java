@@ -1,9 +1,8 @@
-package br.com.richardcsantana.starwarsjavaapi.domain;
+package br.com.richardcsantana.starwarsjavaapi.batch.domain;
 
-import br.com.richardcsantana.starwarsjavaapi.application.FilmService;
-import br.com.richardcsantana.starwarsjavaapi.application.PlanetService;
-import br.com.richardcsantana.starwarsjavaapi.swapi.SwapiGateway;
-import br.com.richardcsantana.starwarsjavaapi.swapi.model.Planet;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.SwapiGateway;
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.model.Planet;
+import br.com.richardcsantana.starwarsjavaapi.common.application.PlanetService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,12 +16,10 @@ public class ApiReaderService {
 
     private final SwapiGateway swapiGateway;
     private final PlanetService planetService;
-    private final FilmService filmService;
 
-    public ApiReaderService(SwapiGateway swapiGateway, PlanetService planetService, FilmService filmService) {
+    public ApiReaderService(SwapiGateway swapiGateway, PlanetService planetService) {
         this.swapiGateway = swapiGateway;
         this.planetService = planetService;
-        this.filmService = filmService;
     }
 
     public Flux<Planet> consumePlanets() {

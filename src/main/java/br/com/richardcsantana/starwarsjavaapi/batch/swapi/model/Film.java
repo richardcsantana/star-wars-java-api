@@ -1,4 +1,4 @@
-package br.com.richardcsantana.starwarsjavaapi.swapi.model;
+package br.com.richardcsantana.starwarsjavaapi.batch.swapi.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
