@@ -17,8 +17,8 @@ public class PlanetController {
     }
 
     @GetMapping
-    public Flux<PlanetResponse> getAll() {
-        return planetService.getAll();
+    public Flux<PlanetResponse> getAll(@RequestParam(value = "name", required = false) String name) {
+        return planetService.getAll(name);
     }
 
     @GetMapping("/{id}")

@@ -57,9 +57,14 @@ public class PlanetService {
                         filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())));
     }
 
-    public Flux<PlanetResponse> getAll() {
-        return this.planetRepository.findAll()
-                .flatMap(this::fullfilPlanetResponse);
+    public Flux<PlanetResponse> getAll(String name) {
+        Flux<PlanetEntity> result;
+        if (name != null) {
+            result = this.planetRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            result = this.planetRepository.findAll();
+        }
+        return result.flatMap(this::fullfilPlanetResponse);
     }
 
     private Mono<PlanetResponse> fullfilPlanetResponse(PlanetEntity planet) {
@@ -78,7 +83,11 @@ public class PlanetService {
     }
 
     public Mono<Void> deletePlanet(Long id) {
-        return this.filmPlanetRepository.deleteAllByPlanetExternalId(id)
-                .then(this.planetRepository.deleteByExternalId(id));
+        return this.planetRepository.findByExternalId(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Planet not found")))
+                .flatMap(planetEntity ->
+                        filmPlanetRepository.deleteAllByPlanetId(planetEntity.getId())
+                                .then(planetRepository.delete(planetEntity)));
+
     }
 }

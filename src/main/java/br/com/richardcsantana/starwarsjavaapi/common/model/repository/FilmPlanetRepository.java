@@ -8,6 +8,6 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public interface FilmPlanetRepository extends ReactiveCrudRepository<FilmPlanetEntity, UUID> {
-    @Query("delete from films_planets where planet_id = (select id from planets where external_id = :planetId)")
-    Mono<Void> deleteAllByPlanetExternalId(Long id);
+    @Query("delete from films_planets where planet_id = :planetId")
+    Mono<Void> deleteAllByPlanetId(UUID id);
 }

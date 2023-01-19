@@ -224,7 +224,6 @@ class PlanetControllerTest extends ApplicationTestsBase {
     }
 
     @Test
-    @Disabled("Not implemented yet")
     public void deletePlanetNotFound() {
         testClient.delete()
                 .uri(uriBuilder -> uriBuilder.path("/planets/{id}").build(3L))
@@ -236,7 +235,6 @@ class PlanetControllerTest extends ApplicationTestsBase {
     }
 
     @Test
-    @Disabled("Not implemented yet")
     public void searchByName() {
         testClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/planets").queryParam("name", "Planet1").build())
@@ -250,10 +248,22 @@ class PlanetControllerTest extends ApplicationTestsBase {
     }
 
     @Test
-    @Disabled("Not implemented yet")
+    public void searchByNameWithMultipleResults() {
+        testClient.get()
+                .uri(uriBuilder -> uriBuilder.path("/planets").queryParam("name", "Planet").build())
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType("application/json")
+                .expectBody()
+                .jsonPath("$").isArray()
+                .jsonPath("$.length()").isEqualTo(2)
+                .jsonPath("$[*].name").value(hasItems("Planet1", "Planet2"));
+    }
+
+    @Test
     public void searchByNameWithNoPlanetFound() {
         testClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/planets").queryParam("name", "Planet1").build())
+                .uri(uriBuilder -> uriBuilder.path("/planets").queryParam("name", "Planet3").build())
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType("application/json")
