@@ -5,6 +5,15 @@ import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.PlanetEntit
 
 import java.util.List;
 
+/**
+ * Planet response
+ *
+ * @param id      Planet id
+ * @param name    Planet name
+ * @param climate Planet climate
+ * @param terrain Planet terrain
+ * @param films   List of films
+ */
 public record PlanetResponse(Long id, String name, String climate,
                              String terrain,
                              List<FilmResponse> films) {

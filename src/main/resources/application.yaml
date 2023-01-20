@@ -5,3 +5,19 @@ spring:
     password: postgres
 swapi:
   url: https://swapi.dev/api
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+
+management:
+  server:
+    port: 9090
+logging:
+  file:
+    name: logs/star-wars-api.log

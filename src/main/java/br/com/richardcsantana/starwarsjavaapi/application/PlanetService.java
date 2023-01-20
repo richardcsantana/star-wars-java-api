@@ -44,7 +44,6 @@ public class PlanetService {
                         .flatMap(filmEntity ->
                                 filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())))
                         .then(Mono.just(planetEntity)))
-                .doOnError(e -> logger.log(Level.SEVERE, "Error saving planet: %s".formatted(planetResponse.getName()), e))
                 .doOnSuccess(planetEntity -> logger.log(Level.FINE, "Planet saved: %s".formatted(planetEntity.getName())));
     }
 
@@ -55,8 +54,7 @@ public class PlanetService {
                         this.swapiGateway.getPlanet(id)
                                 .flatMap(this::savePlanet)
                 ).flatMap(this::fullfilPlanetResponse)
-                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "Planet loaded by id: %d".formatted(id)))
-                .doOnError(e -> logger.log(Level.SEVERE, "Error loading planet by id: %d".formatted(id), e));
+                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "Planet loaded by id: %d".formatted(id)));
     }
 
     public Flux<PlanetResponse> getPlanetsByName(String name) {
@@ -80,17 +78,15 @@ public class PlanetService {
                                 .collectList()
                                 .map(filmEntities ->
                                         PlanetResponse.fromPlanetEntity(planetEntity, filmEntities)))
-                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "%d Films loaded for planet: %s".formatted(planetResponse.films().size(), planet.getName())))
-                .doOnError(e -> logger.log(Level.SEVERE, "Error loading films for planet: " + planet.getName(), e));
+                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "%d Films loaded for planet: %s".formatted(planetResponse.films().size(), planet.getName())));
     }
 
     public Mono<PlanetResponse> getPlanetById(Long id) {
-        logger.log(Level.FINE, "Loading planet by id: " + id);
+        logger.log(Level.FINE, "Getting planet by id: " + id);
         return this.planetRepository.findByExternalId(id)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Planet not found")))
                 .flatMap(this::fullfilPlanetResponse)
-                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "Planet loaded by id: " + id))
-                .doOnError(e -> logger.log(Level.SEVERE, "Error loading planet by id: " + id, e));
+                .doOnSuccess(planetResponse -> logger.log(Level.FINE, "Planet got by id: " + id));
     }
 
     public Mono<Void> deletePlanet(Long id) {
@@ -100,8 +96,7 @@ public class PlanetService {
                 .flatMap(planetEntity ->
                         filmPlanetRepository.deleteAllByPlanetId(planetEntity.getId())
                                 .then(planetRepository.delete(planetEntity)))
-                .doOnSuccess(aVoid -> logger.log(Level.FINE, "Planet deleted by id: " + id))
-                .doOnError(e -> logger.log(Level.SEVERE, "Error deleting planet by id: " + id, e));
+                .doOnSuccess(aVoid -> logger.log(Level.FINE, "Planet deleted by id: " + id));
 
     }
 }
