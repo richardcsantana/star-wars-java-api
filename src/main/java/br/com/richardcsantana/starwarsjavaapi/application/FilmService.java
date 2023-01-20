@@ -4,7 +4,10 @@ import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.FilmEntity;
 import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.repository.FilmRepository;
 import br.com.richardcsantana.starwarsjavaapi.gateway.api.SwapiGateway;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @Service
 public class FilmService {
@@ -22,5 +25,9 @@ public class FilmService {
                         swapiGateway.getFilm(externalId)
                                 .map(FilmEntity::fromFilmResponse).flatMap(filmRepository::save)
                 );
+    }
+
+    public Flux<FilmEntity> findAllByPlanetId(UUID externalId) {
+        return this.filmRepository.findAllByPlanetId(externalId);
     }
 }

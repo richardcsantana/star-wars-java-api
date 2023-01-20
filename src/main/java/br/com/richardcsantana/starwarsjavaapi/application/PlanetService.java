@@ -7,7 +7,6 @@ import br.com.richardcsantana.starwarsjavaapi.gateway.api.dto.APIPlanetResponse;
 import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.FilmPlanetEntity;
 import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.PlanetEntity;
 import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.repository.FilmPlanetRepository;
-import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.repository.FilmRepository;
 import br.com.richardcsantana.starwarsjavaapi.gateway.database.model.repository.PlanetRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,26 +19,27 @@ public class PlanetService {
     private final FilmService filmService;
     private final FilmPlanetRepository filmPlanetRepository;
     private final SwapiGateway swapiGateway;
-    private final FilmRepository filmRepository;
 
-    public PlanetService(PlanetRepository planetRepository, FilmService filmService, FilmPlanetRepository filmPlanetRepository, SwapiGateway swapiGateway, FilmRepository filmRepository) {
+    public PlanetService(PlanetRepository planetRepository,
+                         FilmService filmService,
+                         FilmPlanetRepository filmPlanetRepository,
+                         SwapiGateway swapiGateway) {
         this.planetRepository = planetRepository;
         this.filmService = filmService;
         this.filmPlanetRepository = filmPlanetRepository;
         this.swapiGateway = swapiGateway;
-        this.filmRepository = filmRepository;
     }
 
     @Transactional
-    public Mono<PlanetEntity> savePlanet(APIPlanetResponse APIPlanetResponse) {
-        return planetRepository.save(PlanetEntity.fromPlanet(APIPlanetResponse))
-                .flatMap(planetEntity -> Flux.fromIterable(APIPlanetResponse.getFilms())
+    public Mono<PlanetEntity> savePlanet(APIPlanetResponse planetResponse) {
+        return planetRepository.save(PlanetEntity.fromPlanet(planetResponse))
+                .flatMap(planetEntity -> Flux.fromIterable(planetResponse.getFilms())
                         .flatMap(filmService::getOrLoad)
-                        .flatMap(filmEntity -> filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())))
+                        .flatMap(filmEntity ->
+                                filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())))
                         .then(Mono.just(planetEntity)));
     }
 
-    @Transactional
     public Mono<PlanetResponse> loadPlanetById(Long id) {
         return this.planetRepository.findByExternalId(id)
                 .switchIfEmpty(
@@ -48,12 +48,12 @@ public class PlanetService {
                 ).flatMap(this::fullfilPlanetResponse);
     }
 
-    public Flux<PlanetResponse> getAll(String name) {
+    public Flux<PlanetResponse> getPlanets(String name) {
         Flux<PlanetEntity> result;
-        if (name != null) {
-            result = this.planetRepository.findByNameContainingIgnoreCase(name);
-        } else {
+        if (name == null) {
             result = this.planetRepository.findAll();
+        } else {
+            result = this.planetRepository.findByNameContainingIgnoreCase(name);
         }
         return result.flatMap(this::fullfilPlanetResponse);
     }
@@ -61,7 +61,7 @@ public class PlanetService {
     private Mono<PlanetResponse> fullfilPlanetResponse(PlanetEntity planet) {
         return Mono.just(planet)
                 .flatMap(planetEntity ->
-                        filmRepository.findAllByPlanetExternalId(planetEntity.getExternalId())
+                        filmService.findAllByPlanetId(planetEntity.getId())
                                 .collectList()
                                 .map(filmEntities ->
                                         PlanetResponse.fromPlanetEntity(planetEntity, filmEntities)));

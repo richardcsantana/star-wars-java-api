@@ -22,7 +22,56 @@ class SwapiGatewayTest extends ApplicationTestsBase {
     @BeforeEach
     public void setUp() {
         serverUrl = mockServer.getEndpoint();
-        var mockServerClient = new MockServerClient(mockServer.getHost(), mockServer.getServerPort());
+        prepareAPICalls();
+    }
+
+    @Test
+    void getPlanetById() {
+        var planet = swapiGateway.getPlanet(3L);
+        StepVerifier
+                .create(planet)
+                .expectNextMatches(planetResponse ->
+                        planetResponse.getName().equals("Yavin IV") &&
+                        planetResponse.getClimate().equals("temperate, tropical") &&
+                        planetResponse.getTerrain().equals("jungle, rainforests") &&
+                        planetResponse.getFilms().size() == 1 &&
+                        planetResponse.getFilms().get(0) == 3L
+                ).verifyComplete();
+    }
+
+    @Test
+    void getPlanetByIdNotFound() {
+        var planet = swapiGateway.getPlanet(999L);
+        StepVerifier
+                .create(planet)
+                .expectError(SwapiNotFoundException.class)
+                .verify();
+    }
+
+    @Test
+    void getPlanetIdWithError() {
+        var planet = swapiGateway.getPlanet(5L);
+        StepVerifier
+                .create(planet)
+                .expectError(Exception.class)
+                .verify();
+    }
+
+
+    @Test
+    void getFilmById() {
+        var film = swapiGateway.getFilm(3L);
+        StepVerifier
+                .create(film)
+                .expectNextMatches(filmResponse ->
+                        filmResponse.getTitle().equals("Revenge of the Sith") &&
+                        filmResponse.getDirector().equals("George Lucas") &&
+                        filmResponse.getReleaseDate().equals(LocalDate.parse("2005-05-19")))
+                .verifyComplete();
+    }
+
+    private void prepareAPICalls() {
+        MockServerClient mockServerClient = new MockServerClient(mockServer.getHost(), mockServer.getServerPort());
         mockServerClient.when(
                 request().withPath("/planets/3").withMethod("GET")
         ).respond(
@@ -88,7 +137,7 @@ class SwapiGatewayTest extends ApplicationTestsBase {
                                     }
                                 """));
         mockServerClient.when(
-                request().withPath("/planets/4").withMethod("GET")
+                request().withPath("/planets/5").withMethod("GET")
         ).respond(
                 response().withStatusCode(500)
                         .withHeader("Content-Type", "application/json")
@@ -96,52 +145,7 @@ class SwapiGatewayTest extends ApplicationTestsBase {
                                 {
                                     "detail": "Internal server error"
                                 }
-                                """.replaceAll("api_url", serverUrl)));
-    }
-
-    @Test
-    void getPlanetById() {
-        var planet = swapiGateway.getPlanet(3L);
-        StepVerifier
-                .create(planet)
-                .expectNextMatches(planetResponse ->
-                        planetResponse.getName().equals("Yavin IV") &&
-                        planetResponse.getClimate().equals("temperate, tropical") &&
-                        planetResponse.getTerrain().equals("jungle, rainforests") &&
-                        planetResponse.getFilms().size() == 1 &&
-                        planetResponse.getFilms().get(0) == 3L
-                ).verifyComplete();
-    }
-
-    @Test
-    void getPlanetByIdNotFound() {
-        var planet = swapiGateway.getPlanet(999L);
-        StepVerifier
-                .create(planet)
-                .expectError(SwapiNotFoundException.class)
-                .verify();
-    }
-
-    @Test
-    void getPlanetIdWithError() {
-        var planet = swapiGateway.getPlanet(4L);
-        StepVerifier
-                .create(planet)
-                .expectError(Exception.class)
-                .verify();
-    }
-
-
-    @Test
-    void getFilmById() {
-        var film = swapiGateway.getFilm(3L);
-        StepVerifier
-                .create(film)
-                .expectNextMatches(filmResponse ->
-                        filmResponse.getTitle().equals("Revenge of the Sith") &&
-                        filmResponse.getDirector().equals("George Lucas") &&
-                        filmResponse.getReleaseDate().equals(LocalDate.parse("2005-05-19")))
-                .verifyComplete();
+                                """));
     }
 
 }

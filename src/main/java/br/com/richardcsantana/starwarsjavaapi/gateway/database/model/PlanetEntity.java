@@ -23,8 +23,12 @@ public class PlanetEntity {
         this.terrain = terrain;
     }
 
-    public static PlanetEntity fromPlanet(APIPlanetResponse APIPlanetResponse) {
-        return new PlanetEntity(APIPlanetResponse.getName(), APIPlanetResponse.getClimate(), APIPlanetResponse.getTerrain(), APIPlanetResponse.getId());
+    public static PlanetEntity fromPlanet(APIPlanetResponse planetResponse) {
+        return new PlanetEntity(
+                planetResponse.getName(),
+                planetResponse.getClimate(),
+                planetResponse.getTerrain(),
+                planetResponse.getId());
     }
 
     public UUID getId() {

@@ -11,7 +11,11 @@ class APIFilmResponseTest {
 
     @Test
     void shouldCreateFilm() {
-        var film = new APIFilmResponse("https://api_url/films/1/", "A New Hope", "George Lucas", LocalDate.parse("1977-05-25"));
+        var film = new APIFilmResponse(
+                "https://api_url/films/1/",
+                "A New Hope",
+                "George Lucas",
+                LocalDate.parse("1977-05-25"));
 
         assertEquals(1L, film.getId());
         assertEquals("A New Hope", film.getTitle());
@@ -22,7 +26,11 @@ class APIFilmResponseTest {
     @Test
     void shouldThrowExceptionWithInvalidUrl() {
         assertThrows(IllegalArgumentException.class,
-                () -> new APIFilmResponse("invalid_url", "A New Hope", "George Lucas", LocalDate.parse("1977-05-25")));
+                () -> new APIFilmResponse(
+                        "invalid_url",
+                        "A New Hope",
+                        "George Lucas",
+                        LocalDate.parse("1977-05-25")));
     }
 
 }

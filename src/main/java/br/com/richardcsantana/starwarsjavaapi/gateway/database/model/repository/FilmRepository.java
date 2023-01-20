@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface FilmRepository extends ReactiveCrudRepository<FilmEntity, UUID> {
     Mono<FilmEntity> findByExternalId(Long id);
 
-    @Query("SELECT f.* FROM films as f inner join films_planets fp on f.id = fp.film_id inner join planets p on fp.planet_id = p.id where p.external_id = :planetId")
-    Flux<FilmEntity> findAllByPlanetExternalId(Long planetId);
+    @Query("SELECT f.* FROM films as f inner join films_planets fp on f.id = fp.film_id where fp.planet_id = :planetId")
+    Flux<FilmEntity> findAllByPlanetId(UUID planetId);
 
 }

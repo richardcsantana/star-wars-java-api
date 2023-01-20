@@ -10,6 +10,12 @@ public record PlanetResponse(Long id, String name, String climate,
                              List<FilmResponse> films) {
 
     public static PlanetResponse fromPlanetEntity(PlanetEntity planetEntity, List<FilmEntity> films) {
-        return new PlanetResponse(planetEntity.getExternalId(), planetEntity.getName(), planetEntity.getClimate(), planetEntity.getTerrain(), films.stream().map(FilmResponse::fromFilmEntity).toList());
+        return new PlanetResponse(
+                planetEntity.getExternalId(),
+                planetEntity.getName(),
+                planetEntity.getClimate(),
+                planetEntity.getTerrain(),
+                films.stream().map(
+                        FilmResponse::fromFilmEntity).toList());
     }
 }

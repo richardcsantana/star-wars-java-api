@@ -21,8 +21,16 @@ class PlanetResponseTest {
                         1L
                 ),
                 List.of(
-                        new FilmEntity("A New Hope", "George Lucas", LocalDate.parse("1977-05-25"), 1L),
-                        new FilmEntity("The Empire Strikes Back", "Irvin Kershner", LocalDate.parse("1980-05-17"), 2L)
+                        new FilmEntity(
+                                "A New Hope",
+                                "George Lucas",
+                                LocalDate.parse("1977-05-25"),
+                                1L),
+                        new FilmEntity(
+                                "The Empire Strikes Back",
+                                "Irvin Kershner",
+                                LocalDate.parse("1980-05-17"),
+                                2L)
                 )
         );
 

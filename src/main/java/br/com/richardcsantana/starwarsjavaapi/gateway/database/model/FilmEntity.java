@@ -44,6 +44,10 @@ public class FilmEntity {
     }
 
     public static FilmEntity fromFilmResponse(APIFilmResponse APIFilmResponse) {
-        return new FilmEntity(APIFilmResponse.getTitle(), APIFilmResponse.getDirector(), APIFilmResponse.getReleaseDate(), APIFilmResponse.getId());
+        return new FilmEntity(
+                APIFilmResponse.getTitle(),
+                APIFilmResponse.getDirector(),
+                APIFilmResponse.getReleaseDate(),
+                APIFilmResponse.getId());
     }
 }

@@ -37,6 +37,15 @@ public class APIPlanetResponse {
         }
     }
 
+    private Long parseFilmId(String url) {
+        var matcher = Pattern.compile("films/(\\d+)").matcher(url);
+        if (matcher.find()) {
+            return Long.parseLong(matcher.group(1));
+        } else {
+            throw new IllegalArgumentException("Invalid film url: " + url);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -57,12 +66,4 @@ public class APIPlanetResponse {
         return id;
     }
 
-    private Long parseFilmId(String url) {
-        var matcher = Pattern.compile("/films/(\\d+)").matcher(url);
-        if (matcher.find()) {
-            return Long.parseLong(matcher.group(1));
-        } else {
-            throw new IllegalArgumentException("Invalid film url: " + url);
-        }
-    }
 }

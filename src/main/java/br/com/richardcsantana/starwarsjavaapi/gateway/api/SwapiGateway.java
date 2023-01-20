@@ -28,6 +28,8 @@ public class SwapiGateway {
                 .retrieve()
                 .bodyToMono(APIPlanetResponse.class)
                 .onErrorResume(WebClientResponseException.class,
-                        ex -> ex.getStatusCode().value() == 404 ? Mono.error(new SwapiNotFoundException("Planet Not Found on the source API")) : Mono.error(ex));
+                        ex -> ex.getStatusCode().value() == 404 ?
+                                Mono.error(new SwapiNotFoundException("Planet Not Found on the source API")) :
+                                Mono.error(ex));
     }
 }

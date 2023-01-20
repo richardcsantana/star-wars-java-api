@@ -18,8 +18,8 @@ public class PlanetController {
     }
 
     @GetMapping
-    public Flux<PlanetResponse> getAll(@RequestParam(value = "name", required = false) String name) {
-        return planetService.getAll(name);
+    public Flux<PlanetResponse> getPlanets(@RequestParam(value = "name", required = false) String name) {
+        return planetService.getPlanets(name);
     }
 
     @GetMapping("/{id}")
