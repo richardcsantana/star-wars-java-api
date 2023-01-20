@@ -174,7 +174,7 @@ class APIPlanetResponseControllerTest extends ApplicationTestsBase {
                 .expectStatus().isEqualTo(INTERNAL_SERVER_ERROR)
                 .expectHeader().contentType("application/json")
                 .expectBody()
-                .jsonPath("$.message").isEqualTo("Internal server error");
+                .jsonPath("$.message").isEqualTo("We can't load your request now, please try again later");
     }
 
     @Test

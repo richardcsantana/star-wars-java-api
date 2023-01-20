@@ -53,7 +53,7 @@ class SwapiGatewayTest extends ApplicationTestsBase {
         var planet = swapiGateway.getPlanet(5L);
         StepVerifier
                 .create(planet)
-                .expectError(Exception.class)
+                .expectError(SwapiException.class)
                 .verify();
     }
 

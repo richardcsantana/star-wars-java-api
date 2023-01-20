@@ -19,7 +19,10 @@ public class PlanetController {
 
     @GetMapping
     public Flux<PlanetResponse> getPlanets(@RequestParam(value = "name", required = false) String name) {
-        return planetService.getPlanets(name);
+        if (name != null) {
+            return planetService.getPlanetsByName(name);
+        }
+        return planetService.getPlanets();
     }
 
     @GetMapping("/{id}")

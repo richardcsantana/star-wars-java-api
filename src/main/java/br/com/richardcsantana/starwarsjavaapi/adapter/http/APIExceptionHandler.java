@@ -1,8 +1,9 @@
 package br.com.richardcsantana.starwarsjavaapi.adapter.http;
 
 import br.com.richardcsantana.starwarsjavaapi.adapter.http.dto.ErrorResponse;
-import br.com.richardcsantana.starwarsjavaapi.gateway.api.SwapiNotFoundException;
 import br.com.richardcsantana.starwarsjavaapi.application.errors.ResourceNotFoundException;
+import br.com.richardcsantana.starwarsjavaapi.gateway.api.SwapiException;
+import br.com.richardcsantana.starwarsjavaapi.gateway.api.SwapiNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,9 +26,9 @@ public class APIExceptionHandler {
     }
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public Mono<ErrorResponse> handleException(Exception e) {
+    @ExceptionHandler(SwapiException.class)
+    public Mono<ErrorResponse> handleException(SwapiException e) {
         logger.log(java.util.logging.Level.SEVERE, e.getMessage(), e);
-        return Mono.just(new ErrorResponse("Internal server error"));
+        return Mono.just(new ErrorResponse(e.getMessage()));
     }
 }
