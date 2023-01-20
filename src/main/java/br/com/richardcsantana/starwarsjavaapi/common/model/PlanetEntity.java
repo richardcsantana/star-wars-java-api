@@ -1,5 +1,6 @@
 package br.com.richardcsantana.starwarsjavaapi.common.model;
 
+import br.com.richardcsantana.starwarsjavaapi.batch.swapi.model.Planet;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -20,6 +21,10 @@ public class PlanetEntity {
         this.name = name;
         this.climate = climate;
         this.terrain = terrain;
+    }
+
+    public static PlanetEntity fromPlanet(Planet planet) {
+        return new PlanetEntity(planet.getName(), planet.getClimate(), planet.getTerrain(), planet.getId());
     }
 
     public UUID getId() {

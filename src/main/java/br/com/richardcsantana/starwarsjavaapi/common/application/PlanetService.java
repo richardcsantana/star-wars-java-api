@@ -33,13 +33,11 @@ public class PlanetService {
 
     @Transactional
     public Mono<PlanetEntity> savePlanet(Planet planet) {
-        Flux<FilmEntity> filmEntityFlux = Flux.fromIterable(planet.getFilms()).flatMap(filmService::getOrSave);
-        return this.planetRepository.findByExternalId(planet.getId())
-                .switchIfEmpty(
-                        this.planetRepository.save(new PlanetEntity(planet.getName(), planet.getClimate(), planet.getTerrain(), planet.getId()))
-                                .flatMap(planetEntity ->
-                                        createRelationBetweenFilmsAndPlanets(filmEntityFlux, planetEntity).then(Mono.just(planetEntity)))
-                );
+        return planetRepository.save(PlanetEntity.fromPlanet(planet))
+                .flatMap(planetEntity -> Flux.fromIterable(planet.getFilms())
+                        .flatMap(filmService::getOrSave)
+                        .flatMap(filmEntity -> filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())))
+                        .then(Mono.just(planetEntity)));
     }
 
     @Transactional
@@ -49,12 +47,6 @@ public class PlanetService {
                         this.swapiGateway.getPlanet(id)
                                 .flatMap(this::savePlanet)
                 ).flatMap(this::fullfilPlanetResponse);
-    }
-
-    private Flux<FilmPlanetEntity> createRelationBetweenFilmsAndPlanets(Flux<FilmEntity> filmEntityFlux, PlanetEntity planetEntity) {
-        return filmEntityFlux.flatMap(
-                filmEntity ->
-                        filmPlanetRepository.save(new FilmPlanetEntity(filmEntity.getId(), planetEntity.getId())));
     }
 
     public Flux<PlanetResponse> getAll(String name) {
