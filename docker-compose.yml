@@ -14,3 +14,15 @@ services:
       - POSTGRES_DB=star_wars
     ports:
       - "5432:5432"
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DATABASE_URL=r2dbc:postgresql://root:postgres@db:5432/star_wars
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=postgres
