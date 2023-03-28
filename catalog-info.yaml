@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: star-wars-api
+  description: This is a Java API that deliveries information about the Star Wars planets. It consumes data from the Star Wars API.
+  tags:
+    - Java API
+    - spring-boot
+spec:
+  type: service
+  lifecycle: production
+  owner: richardcsantana
